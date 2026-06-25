@@ -1,0 +1,102 @@
+.alert {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: var(--radius-base);
+  border: 1px solid;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.alert__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.alert__title {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.alert__body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--fg-body);
+}
+
+.alert__dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  color: var(--fg-body);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color var(--transition-base);
+}
+
+.alert__dismiss:hover {
+  color: var(--fg-heading);
+}
+
+.alert--info {
+  background-color: var(--neutral-secondary);
+  border-color: var(--border-default);
+  box-shadow: 2px 2px 0 0 var(--secondary);
+}
+
+.alert--info .alert__title {
+  color: var(--fg-heading);
+}
+
+.alert--brand {
+  background-color: var(--brand-softer);
+  border-color: var(--border-brand-subtle);
+  box-shadow: 2px 2px 0 0 var(--secondary);
+}
+
+.alert--brand .alert__title {
+  color: var(--fg-brand-strong);
+}
+
+.alert--success {
+  background-color: var(--success-soft);
+  border-color: var(--border-success-subtle);
+  box-shadow: 2px 2px 0 0 var(--success-strong);
+}
+
+.alert--success .alert__title {
+  color: var(--success-strong);
+}
+
+.alert--danger {
+  background-color: var(--danger-soft);
+  border-color: var(--border-danger-subtle);
+  box-shadow: 2px 2px 0 0 var(--danger-strong);
+}
+
+.alert--danger .alert__title {
+  color: var(--danger-strong);
+}
+
+.alert--warning {
+  background-color: var(--warning-soft);
+  border-color: var(--border-warning-subtle);
+  box-shadow: 2px 2px 0 0 var(--warning-strong);
+}
+
+.alert--warning .alert__title {
+  color: var(--warning);
+}
