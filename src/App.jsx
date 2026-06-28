@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Hero from './components/sections/Hero'
+import Services from './components/sections/Services'
+import Reviews from './components/sections/Reviews'
 import Button from './components/ui/Button'
 import './App.css'
 
@@ -9,6 +11,8 @@ function HomePage({ onBookNow }) {
   return (
     <>
       <Hero onBookNow={onBookNow} />
+      <Services onBookNow={onBookNow} />
+      <Reviews />
     </>
   )
 }
