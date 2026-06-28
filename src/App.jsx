@@ -4,6 +4,7 @@ import Footer from './components/layout/Footer'
 import Hero from './components/sections/Hero'
 import Services from './components/sections/Services'
 import Reviews from './components/sections/Reviews'
+import Contact from './components/sections/Contact'
 import Button from './components/ui/Button'
 import './App.css'
 
@@ -13,6 +14,7 @@ function HomePage({ onBookNow }) {
       <Hero onBookNow={onBookNow} />
       <Services onBookNow={onBookNow} />
       <Reviews />
+      <Contact />
     </>
   )
 }
