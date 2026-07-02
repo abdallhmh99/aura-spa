@@ -1,70 +1,108 @@
 import React, { useEffect } from 'react'
 
+const styles = {
+  overlay: {
+    position: 'fixed',
+    inset: 0,
+    zIndex: 1000,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '16px',
+  },
+  backdrop: {
+    position: 'absolute',
+    inset: 0,
+    backgroundColor: 'rgba(44, 63, 167, 0.18)',
+    backdropFilter: 'blur(4px)',
+  },
+  dialog: {
+    position: 'relative',
+    width: '100%',
+    maxWidth: '680px',
+    maxHeight: '90vh',
+    overflowY: 'auto',
+    backgroundColor: 'var(--neutral-secondary, #FBF6EC)',
+    border: '1px solid var(--border-default, #E4E0D9)',
+    borderRadius: '4px',
+    boxShadow: '8px 8px 0 0 #2C3FA7',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  header: {
+    position: 'sticky',
+    top: 0,
+    zIndex: 10,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '16px 24px',
+    borderBottom: '1px solid var(--border-default, #E4E0D9)',
+    backgroundColor: 'var(--neutral-secondary, #FBF6EC)',
+  },
+  title: {
+    fontFamily: '"Space Grotesk", sans-serif',
+    fontSize: '20px',
+    fontWeight: 700,
+    color: 'var(--heading, #2C3FA7)',
+    margin: 0,
+  },
+  closeBtn: {
+    width: '32px',
+    height: '32px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '4px',
+    border: 'none',
+    background: 'transparent',
+    color: 'var(--body, #637EC2)',
+    cursor: 'pointer',
+    fontSize: '18px',
+    transition: 'background-color 150ms, color 150ms',
+  },
+  content: {
+    padding: '24px',
+  },
+}
+
 export default function Modal({ isOpen, onClose, title, children }) {
-  // Prevent scrolling when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = ''
     }
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
+    return () => { document.body.style.overflow = '' }
   }, [isOpen])
 
-  // Close on Escape key
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        onClose()
-      }
+      if (e.key === 'Escape') onClose()
     }
-    if (isOpen) {
-      window.addEventListener('keydown', handleKeyDown)
-    }
+    if (isOpen) window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isOpen, onClose])
 
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-heading/20 backdrop-blur-sm"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-      
-      {/* Modal Dialog */}
-      <div 
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-        className={`
-          relative w-full max-w-2xl max-h-[90vh] overflow-y-auto
-          bg-neutral-secondary border border-border-default rounded-4px
-          shadow-[8px_8px_0_0_#2C3FA7] flex flex-col
-          animate-in fade-in zoom-in-95 duration-200
-        `}
-      >
-        {/* Header */}
-        <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 border-b border-border-default bg-neutral-secondary">
-          <h2 id="modal-title" className="font-heading text-xl text-heading">
-            {title}
-          </h2>
-          <button 
+    <div style={styles.overlay}>
+      <div style={styles.backdrop} onClick={onClose} aria-hidden="true" />
+      <div role="dialog" aria-modal="true" aria-labelledby="modal-title" style={styles.dialog}>
+        <div style={styles.header}>
+          <h2 id="modal-title" style={styles.title}>{title}</h2>
+          <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-4px text-body hover:bg-neutral-tertiary hover:text-heading transition-colors"
+            style={styles.closeBtn}
             aria-label="إغلاق"
+            onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'var(--neutral-tertiary, #F4ECDA)'; e.currentTarget.style.color = 'var(--heading, #2C3FA7)' }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--body, #637EC2)' }}
           >
             ✕
           </button>
         </div>
-
-        {/* Content */}
-        <div className="p-6">
+        <div style={styles.content}>
           {children}
         </div>
       </div>

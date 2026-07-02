@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useServices } from '../../hooks/useServices'
 import Badge from '../ui/Badge'
-import Card from '../ui/Card'
 
 export default function ServicePicker({ onSelect, selectedServiceId }) {
   const { categories, services, isLoading, error } = useServices()
@@ -9,40 +8,42 @@ export default function ServicePicker({ onSelect, selectedServiceId }) {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <p className="text-body font-mono text-sm animate-pulse">جاري تحميل الخدمات...</p>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
+        <p style={{ color: 'var(--body)', fontFamily: '"Space Mono", monospace', fontSize: '14px' }}>جاري تحميل الخدمات...</p>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="p-4 border-2 border-danger-subtle bg-danger-soft rounded-4px">
-        <p className="text-danger-strong font-heading">{error}</p>
+      <div style={{ padding: '16px', border: '2px solid var(--border-danger-subtle)', backgroundColor: 'var(--danger-soft)', borderRadius: '4px' }}>
+        <p style={{ color: 'var(--fg-danger-strong)', fontFamily: '"Space Grotesk", sans-serif' }}>{error}</p>
       </div>
     )
   }
 
-  const displayedServices = activeCategory 
+  const displayedServices = activeCategory
     ? services.filter(s => s.service_categories?.slug === activeCategory)
     : services
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
-        <h3 className="font-heading text-xl text-heading">اختر الخدمة</h3>
-        <p className="text-body text-sm">حددي الخدمة التي ترغبين بحجزها لنتمكن من عرض الأوقات المتاحة.</p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div>
+        <h3 style={{ fontFamily: '"Space Grotesk", sans-serif', fontSize: '20px', fontWeight: 700, color: 'var(--heading, #2C3FA7)', margin: '0 0 8px 0' }}>اختاري الخدمة</h3>
+        <p style={{ color: 'var(--body, #637EC2)', fontSize: '14px', margin: 0 }}>حددي الخدمة التي ترغبين بحجزها لنتمكن من عرض الأوقات المتاحة.</p>
       </div>
 
-      {/* Category Filter */}
-      <div className="flex flex-wrap gap-2">
+      {/* Category Filters */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
         <button
           onClick={() => setActiveCategory(null)}
-          className={`px-4 py-2 rounded-4px font-mono text-sm uppercase transition-all duration-120
-            ${!activeCategory 
-              ? 'bg-heading text-white shadow-sm' 
-              : 'bg-neutral-secondary border border-border-default text-body hover:bg-neutral-tertiary'
-            }`}
+          style={{
+            padding: '8px 16px', borderRadius: '4px', fontFamily: '"Space Mono", monospace', fontSize: '11px',
+            textTransform: 'uppercase', letterSpacing: '0.04em', cursor: 'pointer', transition: 'all 150ms',
+            border: !activeCategory ? '2px solid #2C3FA7' : '1px solid var(--border-default, #E4E0D9)',
+            backgroundColor: !activeCategory ? '#2C3FA7' : 'var(--neutral-secondary, #FBF6EC)',
+            color: !activeCategory ? '#fff' : 'var(--body, #637EC2)',
+          }}
         >
           الكل
         </button>
@@ -50,11 +51,13 @@ export default function ServicePicker({ onSelect, selectedServiceId }) {
           <button
             key={category.id}
             onClick={() => setActiveCategory(category.slug)}
-            className={`px-4 py-2 rounded-4px font-mono text-sm uppercase transition-all duration-120
-              ${activeCategory === category.slug 
-                ? 'bg-heading text-white shadow-sm' 
-                : 'bg-neutral-secondary border border-border-default text-body hover:bg-neutral-tertiary'
-              }`}
+            style={{
+              padding: '8px 16px', borderRadius: '4px', fontFamily: '"Space Mono", monospace', fontSize: '11px',
+              textTransform: 'uppercase', letterSpacing: '0.04em', cursor: 'pointer', transition: 'all 150ms',
+              border: activeCategory === category.slug ? '2px solid #2C3FA7' : '1px solid var(--border-default, #E4E0D9)',
+              backgroundColor: activeCategory === category.slug ? '#2C3FA7' : 'var(--neutral-secondary, #FBF6EC)',
+              color: activeCategory === category.slug ? '#fff' : 'var(--body, #637EC2)',
+            }}
           >
             {category.name}
           </button>
@@ -62,37 +65,46 @@ export default function ServicePicker({ onSelect, selectedServiceId }) {
       </div>
 
       {/* Services Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {displayedServices.map(service => (
-          <div 
-            key={service.id}
-            onClick={() => onSelect(service)}
-            className={`
-              p-4 border rounded-4px cursor-pointer transition-all duration-120
-              flex flex-col gap-3 relative
-              ${selectedServiceId === service.id 
-                ? 'border-brand bg-brand-softer shadow-xs translate-x-[2px] translate-y-[2px]' 
-                : 'border-border-default bg-neutral-secondary hover:bg-neutral-tertiary hover:border-brand-subtle'
-              }
-            `}
-          >
-            <div className="flex justify-between items-start gap-4">
-              <h4 className="font-heading text-lg text-heading leading-tight">{service.name}</h4>
-              <span className="font-mono text-heading font-bold whitespace-nowrap">{service.price} ر.س</span>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
+        {displayedServices.map(service => {
+          const isSelected = selectedServiceId === service.id
+          return (
+            <div
+              key={service.id}
+              onClick={() => onSelect(service)}
+              style={{
+                padding: '16px', borderRadius: '4px', cursor: 'pointer', transition: 'all 120ms',
+                display: 'flex', flexDirection: 'column', gap: '12px',
+                border: isSelected ? '2px solid #F237A1' : '1px solid var(--border-default, #E4E0D9)',
+                backgroundColor: isSelected ? '#FDE3F0' : 'var(--neutral-secondary, #FBF6EC)',
+                boxShadow: isSelected ? '2px 2px 0 0 #2C3FA7' : 'none',
+                transform: isSelected ? 'translate(2px, 2px)' : 'none',
+              }}
+              onMouseEnter={e => { if (!isSelected) { e.currentTarget.style.backgroundColor = '#F4ECDA'; e.currentTarget.style.borderColor = '#F237A1' }}}
+              onMouseLeave={e => { if (!isSelected) { e.currentTarget.style.backgroundColor = 'var(--neutral-secondary, #FBF6EC)'; e.currentTarget.style.borderColor = 'var(--border-default, #E4E0D9)' }}}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' }}>
+                <h4 style={{ fontFamily: '"Space Grotesk", sans-serif', fontSize: '16px', fontWeight: 600, color: 'var(--heading, #2C3FA7)', margin: 0, lineHeight: 1.3 }}>
+                  {service.name}
+                </h4>
+                <span style={{ fontFamily: '"Space Mono", monospace', color: 'var(--heading, #2C3FA7)', fontWeight: 700, whiteSpace: 'nowrap', fontSize: '14px' }}>
+                  {service.price} ر.س
+                </span>
+              </div>
+
+              <p style={{ fontSize: '13px', color: 'var(--body, #637EC2)', margin: 0, lineHeight: 1.5 }}>
+                {service.short_description || service.description}
+              </p>
+
+              <div style={{ marginTop: 'auto', paddingTop: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-default, #E4E0D9)' }}>
+                <span style={{ fontSize: '12px', fontFamily: '"Space Mono", monospace', color: 'var(--body, #637EC2)' }}>
+                  ⏱ {service.duration_minutes} دقيقة
+                </span>
+                {isSelected && <Badge variant="brand">تم الاختيار ✓</Badge>}
+              </div>
             </div>
-            
-            <p className="text-sm text-body line-clamp-2">{service.short_description || service.description}</p>
-            
-            <div className="mt-auto pt-2 flex items-center justify-between border-t border-border-default">
-              <span className="text-xs font-mono text-body flex items-center gap-1">
-                ⏱ {service.duration_minutes} دقيقة
-              </span>
-              {selectedServiceId === service.id && (
-                <Badge variant="brand" className="text-[10px]">تم الاختيار</Badge>
-              )}
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )
