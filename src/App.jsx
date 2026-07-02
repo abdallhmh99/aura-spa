@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { useState } from 'react'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Hero from './components/sections/Hero'
@@ -6,6 +7,7 @@ import Services from './components/sections/Services'
 import Reviews from './components/sections/Reviews'
 import Contact from './components/sections/Contact'
 import Button from './components/ui/Button'
+import BookingModal from './components/booking/BookingModal'
 import './App.css'
 
 function HomePage({ onBookNow }) {
@@ -36,8 +38,12 @@ function DashboardPage() {
 }
 
 function App() {
-  const handleBookNow = () => {
-    alert('Book Now clicked! (The booking system will be activated in Phase 3)')
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
+  const [selectedServiceId, setSelectedServiceId] = useState(null)
+
+  const handleBookNow = (serviceId = null) => {
+    setSelectedServiceId(typeof serviceId === 'string' ? serviceId : null)
+    setIsBookingModalOpen(true)
   }
 
   return (
@@ -50,6 +56,12 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      
+      <BookingModal 
+        isOpen={isBookingModalOpen} 
+        onClose={() => setIsBookingModalOpen(false)} 
+        initialServiceId={selectedServiceId}
+      />
     </BrowserRouter>
   )
 }
